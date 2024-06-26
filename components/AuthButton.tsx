@@ -10,14 +10,6 @@ export function GoogleSigninButton() {
   return <button onClick={handleClick}>Google Login</button>;
 }
 
-export function NaverSigninButton() {
-  const handleClick = () => {
-    signIn("naver");
-  };
-
-  return <button onClick={handleClick}>Naver Login</button>;
-}
-
 export function Logout() {
   const handleClick = () => {
     signOut({ callbackUrl: "/" });

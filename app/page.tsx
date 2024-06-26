@@ -1,41 +1,33 @@
-import {
-  GoogleSigninButton,
-  Logout,
-  NaverSigninButton,
-} from "@/components/AuthButton";
-import { authConfig } from "@/lib/auth";
-import User from "@/lib/models/user.model";
-import { connectToDB } from "@/lib/mongoose";
-import { getServerSession } from "next-auth";
+"use client";
 
-export default async function Home() {
-  await connectToDB();
+import { useState } from "react";
+import Head from "next/head";
+import MyCalendar from "../components/Calendar";
+import EventForm from "../components/EventForm";
+import { IEvent } from "../lib/types"; // 공통 타입 임포트
 
-  const session = await getServerSession(authConfig);
+export default function Home() {
+  const [events, setEvents] = useState<IEvent[]>([]);
 
-  const userId = session?.user?.id;
+  const handleAddEvent = (newEvent: IEvent) => {
+    setEvents([...events, newEvent]);
+  };
 
-  try {
-    const thisUser = await User.findOne({ id: userId });
-    console.log(thisUser);
-  } catch (error) {
-    console.log("❌ This is Error ❌", error);
-  }
-
-  if (session) {
-    return (
-      <div>
-        <h1>{`안녕하세요. ${session}`}</h1>
-        <Logout />
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <h1>로그인을 하세요. </h1>
-        <GoogleSigninButton />
-        <NaverSigninButton />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Head>
+        <title>Geolendar</title>
+        <meta
+          name="description"
+          content="Geolendar - Smart Calendar with Google Maps Integration"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="container mx-auto p-4">
+        <h1 className="text-4xl font-bold text-center mb-8">Geolendar</h1>
+        <EventForm onAddEvent={handleAddEvent} />
+        <MyCalendar events={events} />
+      </main>
+    </div>
+  );
 }

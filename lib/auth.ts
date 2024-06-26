@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import NaverProvider from "next-auth/providers/naver";
 import { connectToDB } from "./mongoose";
 
 import { createUser } from "./actions/user.actions";
@@ -44,10 +43,6 @@ export const authConfig: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-    NaverProvider({
-      clientId: process.env.NAVER_CLIENT_ID as string,
-      clientSecret: process.env.NAVER_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {
